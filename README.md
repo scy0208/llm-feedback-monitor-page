@@ -13,6 +13,49 @@ https://llm-feedback-monitor.vercel.app/api/v0
 
 ## Endpoints
 
+### Register Project
+
+#### Endpoint
+
+```
+PUT /register-project
+```
+
+#### Request Parameters
+
+- `name`: The name of the project to be registered.
+
+#### Request Example
+
+```json
+{
+  "name": "My New Project"
+}
+```
+
+#### Response Example
+
+```json
+{
+  "id": "project-123"
+}
+```
+
+#### Error Responses
+
+A 400 status code will be returned if the name parameter is missing or invalid, along with an error message describing the problem.
+
+For example:
+
+```json
+{
+  "message": "Name is required"
+}
+```
+
+A 500 status code will be returned if an internal server error occurs.
+
+
 ### Register LLM Config
 
 #### Endpoint
