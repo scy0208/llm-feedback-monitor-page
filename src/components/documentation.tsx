@@ -19,7 +19,7 @@ const Documentation = () => {
 
         {/* Register Project */}
         <h3 className="text-lg font-semibold py-5">Register Project</h3>
-        <SyntaxHighlighter>PUT /register-project</SyntaxHighlighter>
+        <SyntaxHighlighter language="bash" style={docco}>PUT /register-project</SyntaxHighlighter>
 
         <h4 className="text-md font-semibold">Request Parameters</h4>
         <SyntaxHighlighter language="json" style={docco}>
@@ -44,7 +44,7 @@ const Documentation = () => {
 
         {/* Register LLM Config */}
         <h3 className="text-lg font-semibold py-5">Register LLM Config</h3>
-        <SyntaxHighlighter>PUT /register-llm-config</SyntaxHighlighter>
+        <SyntaxHighlighter language="bash" style={docco}>PUT /register-llm-config</SyntaxHighlighter>
 
         <h4 className="text-md font-semibold">Request Parameters</h4>
         <SyntaxHighlighter language="json" style={docco}>
@@ -73,7 +73,7 @@ const Documentation = () => {
 
         {/* Store Content */}
         <h3 className="text-lg font-semibold py-5">Store Content</h3>
-        <SyntaxHighlighter>PUT /store-content</SyntaxHighlighter>
+        <SyntaxHighlighter language="bash" style={docco}>PUT /store-content</SyntaxHighlighter>
 
         <h4 className="text-md font-semibold">Request Parameters</h4>
         <SyntaxHighlighter language="json" style={docco}>
