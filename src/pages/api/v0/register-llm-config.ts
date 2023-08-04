@@ -3,13 +3,18 @@ import { createClient } from '@/utils/supabase';
 type RequestData = {
     config: string,
     project_id: string,
-    id?: string
+    id: string
 }
 
 export const runtime = 'edge';
 
 export async function insertConfig(
     { config, project_id, id }: RequestData) {
+
+    if (!id) {
+        throw new Error("Id is required");
+    }
+
     if (!config) {
         throw new Error("Content is required");
     }
@@ -38,22 +43,22 @@ export async function insertConfig(
 export default async function PUT(req: Request) {
     try {
         const requestData = (await req.json()) as RequestData;
+        if (!requestData.id) {
+            return new Response(JSON.stringify({ message: 'Id in uuid format is required ' }), { status: 400 });
+        }
+        const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+        if (!uuidRegex.test(requestData.id)) {
+            return new Response(JSON.stringify({ message: 'Invalid UUID format in id' }), { status: 400 });
+        }
+
         if (!requestData.config) {
-            return new Response(JSON.stringify({ message: 'Content is required' }), { status: 400 });
+            return new Response(JSON.stringify({ message: 'Config is required' }), { status: 400 });
         }
 
         try {
             JSON.parse(requestData.config);
         } catch (e) {
             return new Response(JSON.stringify({ message: 'Invalid JSON content in config' }), { status: 400 });
-        }
-
-        if (requestData.id) {
-            // Check if requestData.id is a valid UUID
-            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-            if (!uuidRegex.test(requestData.id)) {
-                return new Response(JSON.stringify({ message: 'Invalid UUID format in id' }), { status: 400 });
-            }
         }
 
         if (!requestData.project_id) {
