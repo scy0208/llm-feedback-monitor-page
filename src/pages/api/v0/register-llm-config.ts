@@ -1,19 +1,16 @@
-import { createClient } from '@/utils/supabase'
+import { createClient } from '@/utils/supabase';
 
 type RequestData = {
-    content: string;
-    project_id: string;
-    group_id?: string;
-    created_by?: string;
-    id?: string; // Allow ID to be optionally provided
-    config_id?: string
+    config: string,
+    project_id: string,
+    id?: string
 }
 
 export const runtime = 'edge';
 
-export async function insertContent(
-    { content, project_id, created_by, group_id, id }: RequestData) {
-    if (!content) {
+export async function insertConfig(
+    { config, project_id, id }: RequestData) {
+    if (!config) {
         throw new Error("Content is required");
     }
     if (!project_id) {
@@ -21,16 +18,14 @@ export async function insertContent(
     }
 
     const dataToInsert = {
-        content,
+        config,
         project_id,
-        group_id,
-        created_by,
         ...(id ? { id } : {}), // Include the ID if provided, otherwise leave it undefined so that the database auto-generates it
     };
 
     const { data, error } = await createClient()
-        .from('Content')
-        .insert([dataToInsert])
+        .from('LLMConfig')
+        .upsert([dataToInsert])
         .select();
 
     if (error || !data || data.length === 0) {
@@ -43,15 +38,29 @@ export async function insertContent(
 export default async function PUT(req: Request) {
     try {
         const requestData = (await req.json()) as RequestData;
-        if (!requestData.content) {
+        if (!requestData.config) {
             return new Response(JSON.stringify({ message: 'Content is required' }), { status: 400 });
+        }
+
+        try {
+            JSON.parse(requestData.config);
+        } catch (e) {
+            return new Response(JSON.stringify({ message: 'Invalid JSON content in config' }), { status: 400 });
+        }
+
+        if (requestData.id) {
+            // Check if requestData.id is a valid UUID
+            const uuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+            if (!uuidRegex.test(requestData.id)) {
+                return new Response(JSON.stringify({ message: 'Invalid UUID format in id' }), { status: 400 });
+            }
         }
 
         if (!requestData.project_id) {
             return new Response(JSON.stringify({ message: 'project_id is required' }), { status: 400 });
         }
 
-        const id = await insertContent(requestData);
+        const id = await insertConfig(requestData);
         return new Response(JSON.stringify({ id }), { status: 200 });
     } catch (error) {
         console.error("An error occurred:", error);
