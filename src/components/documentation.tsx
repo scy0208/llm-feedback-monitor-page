@@ -17,7 +17,6 @@ const Documentation: React.FC = () => {
   return (
     <div style={{ padding: '20px', fontFamily: 'Arial, sans-serif' }}>
       <ReactMarkdown
-        children={markdownContent}
         components={{
           code: ({ node, className, ...props }) => (
             <pre style={{ background: 'black', padding: '15px', borderRadius: '5px' }}>
@@ -29,7 +28,9 @@ const Documentation: React.FC = () => {
           h3: ({ node, ...props }) => <h3 style={{ fontSize: '1.5rem' }} {...props} />,
           // Add more styling for other elements as needed
         }}
-      />
+      >
+        {markdownContent}
+      </ReactMarkdown>
     </div>
   );
 };
