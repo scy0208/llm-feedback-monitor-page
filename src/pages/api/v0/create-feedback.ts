@@ -59,6 +59,10 @@ export async function createFeedback(
 }
 
 export default async function PUT(req: Request) {
+    if(req.method == 'OPTIONS') {
+        return new Response(null, { status: 200 });
+    }
+
     try {
         const requestData = (await req.json()) as RequestData;
         if (!requestData.project_id) {
