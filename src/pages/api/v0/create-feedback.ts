@@ -7,7 +7,7 @@ type RequestData = {
     group_id?: string
     key: string,
     score: number,
-    user: string,
+    user?: string,
     comment?: string,
     id?: string
 }
@@ -42,7 +42,7 @@ export async function createFeedback(
         score,
         comment,
         user,
-        feedback_source: "API"
+        feedback_source: "API",
         ...(id ? { id } : {}), // Include the ID if provided, otherwise leave it undefined so that the database auto-generates it
     };
 
