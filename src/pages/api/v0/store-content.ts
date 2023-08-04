@@ -12,7 +12,7 @@ type RequestData = {
 export const runtime = 'edge';
 
 export async function insertContent(
-    { content, project_id, created_by, group_id, id }: RequestData) {
+    { content, project_id, created_by, group_id, config_id, id }: RequestData) {
     if (!content) {
         throw new Error("Content is required");
     }
@@ -25,6 +25,7 @@ export async function insertContent(
         project_id,
         group_id,
         created_by,
+        config_id,
         ...(id ? { id } : {}), // Include the ID if provided, otherwise leave it undefined so that the database auto-generates it
     };
 
