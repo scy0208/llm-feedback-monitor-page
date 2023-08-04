@@ -72,7 +72,7 @@ PUT /store-content
 
 ```json
 {
-  "id": "content-1"
+  "id": "6b892172-8c40-4260-acc4-6bc3ba85ded2"
 }
 ```
 
