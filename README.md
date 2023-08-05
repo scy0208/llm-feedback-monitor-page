@@ -133,6 +133,62 @@ For example:
 
 A 500 status code will be returned if an internal server error occurs.
 
+### Create Feedback
+
+#### Endpoint
+
+```
+PUT /create-feedback
+```
+
+#### Request Parameters
+
+- `project_id`: The identifier for the project (required).
+- `config_id`: The identifier for the configuration (required).
+- `content_id`: The identifier for the content (required).
+- `group_id`: The identifier for the group (optional).
+- `key`: A unique key representing the feedback item (required).
+- `score`: A numerical score assigned to the feedback (required).
+- `user`: The identifier for the user providing the feedback (optional).
+- `comment`: A comment or description related to the feedback (optional).
+- `id`: An identifier for the feedback item (optional).
+
+#### Request Example
+
+```json
+{
+  "project_id": "project-1",
+  "config_id": "config-123",
+  "content_id": "content-456",
+  "key": "feedback-key",
+  "score": 4.5,
+  "user": "user-789",
+  "comment": "Great content!"
+}
+```
+
+#### Response Example
+
+```json
+{
+  "id": "feedback-101"
+}
+```
+
+#### Error Responses
+
+A 400 status code will be returned if any required parameters are missing or invalid, along with an error message describing the problem.
+
+For example:
+
+```json
+{
+  "message": "Project_id is required"
+}
+```
+
+A 500 status code will be returned if an internal server error occurs.
+
 ## Contact
 
 For any queries related to these APIs, please contact [Support Team](mailto:support@springsun-tech.com).
