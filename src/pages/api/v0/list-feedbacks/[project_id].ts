@@ -16,7 +16,15 @@ export default async function GET(req: Request, res: Response) {
   const projectId = pathSegments[pathSegments.length - 1];
 
   // Construct the query, adding filters for the project_id and all other query parameters
-  let queryBuilder = createClient().from('Feedback').select('*').eq('project_id', projectId);
+  let queryBuilder = createClient()
+    .from('Feedback')
+    .select(`
+      *,
+      LLMConfig (*),
+      Content (*)
+    `)
+    .eq('project_id', projectId);
+
   for (const [key, value] of Object.entries(query)) {
     queryBuilder = queryBuilder.eq(key, value);
   }
