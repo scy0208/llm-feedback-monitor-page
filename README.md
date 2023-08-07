@@ -190,7 +190,7 @@ For example:
 A 500 status code will be returned if an internal server error occurs.
 
 
-### Create Feedback
+### List Feedback
 
 #### Endpoint
 
@@ -258,6 +258,60 @@ list-feedbacks/proj_657a6e9b?config_id=4b3c7c25-a9cc-4ad2-9019-f765fc2af3ff
 			"project_id": "proj_657a6e9b",
 			"config_id": "4b3c7c25-a9cc-4ad2-9019-f765fc2af3ff"
 		}
+	}]
+}
+```
+
+#### Error Responses
+
+A 400 status code will be returned if any required parameters are missing or invalid, along with an error message describing the problem.
+
+For example:
+
+```json
+{
+  "message": "Project_id is required"
+}
+```
+
+A 500 status code will be returned if an internal server error occurs.
+
+### Config Summary
+
+#### Endpoint
+
+```
+GET /config-summary/<project_id>?<query_param>=<value>
+```
+
+#### Request Parameters
+
+| URL Parameter  | Description                                      | Required/Optional |
+|----------------|--------------------------------------------------|-------------------|
+| `project_id`   | The identifier for the project                   | Required          |
+
+| Query Parameter| Description                                      | Required/Optional |
+|----------------|--------------------------------------------------|-------------------|
+| `config_id`    | The identifier for the LLM configuration         | Optional          |
+| `key`          | A unique key representing the feedback item      | Optional          |
+
+
+#### Request Example
+
+```
+config-summary/proj_657a6e9b?config_id=4b3c7c25-a9cc-4ad2-9019-f765fc2af3ff
+```
+
+#### Response Example
+
+```json
+{
+	"data": [{
+		"config_id": "4b3c7c25-a9cc-4ad2-9019-f765fc2af3ff",
+		"config": "{\"prompt\":\"You are ChatGPT, a large language model trained by OpenAI. Follow the user's instructions carefully. Respond using markdown.\",\"model\":\"gpt-3.5-turbo-0613\",\"temperature\":1.2}",
+		"project_id": "proj_657a6e9b",
+		"key": "thumb_up",
+		"total_score": 5
 	}]
 }
 ```
